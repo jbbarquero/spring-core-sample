@@ -15,7 +15,11 @@ public class Main {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
 		info(context);
 		Main main = context.getBean(Main.class);
+                System.out.println("***** Running CustomService *********");
 		main.customService.run();
+                System.out.println("***** Info from CustomService *********");
+                main.customService.info();
+                System.out.println("***** No more lyrics *********");
 		context.close();
 	}
 	
@@ -24,7 +28,7 @@ public class Main {
 		System.out.println("***** Loaded beans *********");
 		for (String beanName : beanNames) {
 			Object beanInstance = context.getBean(beanName);
-			System.out.printf("Bean name: %s. Class: %s\n", beanName, beanInstance.getClass().getName());
+			System.out.printf(">>>>> Bean name: %s. Class: %s\n", beanName, beanInstance.getClass().getName());
 		}
 		System.out.println("***** END Loaded beans *********");
 	}
