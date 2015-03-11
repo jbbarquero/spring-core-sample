@@ -1,5 +1,6 @@
 package com.malsolo.springframework.reloaded;
 
+
 public class SimpleMessageServiceImpl implements MessageService {
 	
 	private final String message;

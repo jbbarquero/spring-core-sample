@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -15,6 +16,7 @@ import com.malsolo.springframework.core.sample.Main;
 
 @Configuration
 @PropertySource("classpath:printer.properties")
+@ComponentScan
 public class Application {
 
     final private static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -37,7 +39,7 @@ public class Application {
 		ApplicationContext context = new AnnotationConfigApplicationContext(
 				Application.class);
 		info(context);
-		MessagePrinter printer = context.getBean(MessagePrinter.class);
+		MessagePrinter printer = context.getBean("messagePrinter", MessagePrinter.class);
 		printer.printMessage();
 		((ConfigurableApplicationContext) context).close();
 	}
