@@ -7,19 +7,19 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.Environment;
 
 import com.malsolo.springframework.core.sample.Main;
 
 @Configuration
 @PropertySource("classpath:printer.properties")
-@ComponentScan
+//@ComponentScan
 public class Application {
 
-    final private static Logger logger = LoggerFactory.getLogger(Main.class);
+	final private static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	@Autowired
 	private Environment environment;
@@ -36,10 +36,20 @@ public class Application {
 	}
 
 	public static void main(String[] args) {
-		ApplicationContext context = new AnnotationConfigApplicationContext(
-				Application.class);
+		boolean xml = false;
+		if (args.length > 0) {
+			xml = Boolean.valueOf(args[0]);			
+		}
+		ApplicationContext context = null;
+		if (!xml) {
+			context = new AnnotationConfigApplicationContext(Application.class);
+		} else {
+			context = new ClassPathXmlApplicationContext(
+					"META-INF/spring/applicationContext.xml");
+		}
 		info(context);
-		MessagePrinter printer = context.getBean("messagePrinter", MessagePrinter.class);
+		MessagePrinter printer = context.getBean("messagePrinter",
+				MessagePrinter.class);
 		printer.printMessage();
 		((ConfigurableApplicationContext) context).close();
 	}
@@ -55,7 +65,8 @@ public class Application {
 		System.err.println("***** Loaded beans *********");
 		for (String beanName : beanNames) {
 			Object beanInstance = context.getBean(beanName);
-			System.err.printf("· Bean name: %s. Class: %s\n", beanName, beanInstance.getClass().getName());
+			System.err.printf("· Bean name: %s. Class: %s\n", beanName,
+					beanInstance.getClass().getName());
 		}
 		System.err.println("***** END Loaded beans *********");
 		logger.info("INFO. END.");
