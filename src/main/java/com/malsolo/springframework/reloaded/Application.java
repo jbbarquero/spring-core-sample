@@ -16,7 +16,6 @@ import com.malsolo.springframework.core.sample.Main;
 
 @Configuration
 @PropertySource("classpath:printer.properties")
-//@ComponentScan
 public class Application {
 
 	final private static Logger logger = LoggerFactory.getLogger(Main.class);
